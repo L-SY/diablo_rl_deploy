@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<library path="rqt_sine_publisher">
+    <class name="rqt_sine_publisher" type="rqt_sine_publisher.sine_wave_publisher.RqtSinePublisher" base_class_type="rqt_gui_py::Plugin">
+        <description>
+            一个通过正弦波产生 Float64MultiArray 消息的 rqt 插件。
+            在界面上可根据输入的通道数量动态生成参数面板，
+            每个面板中可设定幅度、频率、最小值和最大值，
+            并提供"一键置零"、"开启发送"、"停止发送"的功能。
+        </description>
+        <qtgui>
+            <group>
+                <label>Topic Tools</label>
+                <icon type="theme">folder</icon>
+                <statustip>Topic tools</statustip>
+            </group>
+            <label>Sine Wave Publisher</label>
+            <icon type="theme">applications-other</icon>
+            <statustip>A plugin for publishing sine waves</statustip>
+        </qtgui>
+    </class>
+</library>
