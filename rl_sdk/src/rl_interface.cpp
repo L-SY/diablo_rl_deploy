@@ -6,7 +6,7 @@
 #include <std_msgs/Float64.h>
 #include <std_msgs/Float64MultiArray.h>
 #include <rl_msgs/RobotState.h>
-#include "rl_sdk/rl_sdk.hpp"
+#include "rl_sdk/rl_sdk.h"
 
 class RLInterface : public rl_sdk
 {
@@ -23,8 +23,6 @@ public:
     nh_.param<std::string>("robot_name", robot_name, "");
     std::string rl_path;
     nh_.param<std::string>("rl_path", rl_path, "");
-    std::string config_path = std::string(rl_path + "/config.yaml");
-    ReadYaml(config_path);
 
     nh_.param<bool>("send_command", sendCommand_, false);
     if (sendCommand_)
@@ -33,9 +31,8 @@ public:
       rlCommandPub_ = nh_.advertise<std_msgs::Float64MultiArray>("/rl/command_test", 1);
 
     // model
-    std::string model_path = std::string(rl_path + "/" + params.model_name);
+    std::string model_path = std::string(rl_path + "/" + params->model_name);
     model = torch::jit::load(model_path);
-    //  model.dump(true,false,false);
 
     // init
     torch::autograd::GradMode::set_enabled(false);
@@ -56,11 +53,11 @@ public:
       SetObservation();
       obs.actions = Forward();
       torch::Tensor origin_output_command = ComputeCommand(obs.actions);
-      output_command = torch::clamp(origin_output_command, params.clip_actions_lower, params.clip_actions_upper);
+      output_command = torch::clamp(origin_output_command, params->clip_actions_lower, params->clip_actions_upper);
       ROS_INFO_STREAM(output_command[0]);
 
       std_msgs::Float64MultiArray commandMsg;
-      for (int i = 0; i < params.num_of_dofs; ++i) {
+      for (int i = 0; i < params->num_of_dofs; ++i) {
         commandMsg.data.push_back(output_command[0][i].item<double>());
       }
       rlCommandPub_.publish(commandMsg);
@@ -76,14 +73,14 @@ private:
 
   void robotStateCB(const rl_msgs::RobotState&msg)
   {
-    if(params.framework == "isaacgym")
+    if(params->framework == "isaacgym")
     {
-      robot_state.imu.quaternion[3] = msg.imu_states.orientation.w;
       robot_state.imu.quaternion[0] = msg.imu_states.orientation.x;
       robot_state.imu.quaternion[1] = msg.imu_states.orientation.y;
       robot_state.imu.quaternion[2] = msg.imu_states.orientation.z;
+      robot_state.imu.quaternion[3] = msg.imu_states.orientation.w;
     }
-    else if(params.framework == "isaacsim")
+    else if(params->framework == "isaacsim")
     {
       robot_state.imu.quaternion[0] = msg.imu_states.orientation.w;
       robot_state.imu.quaternion[1] = msg.imu_states.orientation.x;
@@ -95,7 +92,7 @@ private:
     robot_state.imu.gyroscope[1] = msg.imu_states.angular_velocity.y;
     robot_state.imu.gyroscope[2] = msg.imu_states.angular_velocity.z;
 
-    for(int i = 0; i < params.num_of_dofs; ++i)
+    for(int i = 0; i < params->num_of_dofs; ++i)
     {
       robot_state.motor_state.dq[i] = msg.joint_states.velocity[i];
       robot_state.motor_state.tauEst[i] = msg.joint_states.effort[i];
@@ -118,7 +115,8 @@ int main(int argc, char **argv)
 
   RLInterface rl_interface(nh);
   // the frequence should be gym 1/(dt*decimation)
-  ros::Rate loop_rate(100);
+  ros::Rate loop_rate(1 / (rl_interface.params->dt*rl_interface.params->decimation));
+
   while (ros::ok())
   {
     ros::spinOnce();

@@ -4,20 +4,11 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
-
+#include "rl_sdk/diablo.h"
 #include <yaml-cpp/yaml.h>
 #include "observation_buffer.hpp"
 
 // ref: https://github.com/fan-ziqi/rl_sar
-
-namespace LOGGER {
-    const char* const INFO    = "\033[0;37m[INFO]\033[0m ";
-    const char* const WARNING = "\033[0;33m[WARNING]\033[0m ";
-    const char* const ERROR   = "\033[0;31m[ERROR]\033[0m ";
-    const char* const DEBUG   = "\033[0;32m[DEBUG]\033[0m ";
-}
-
-
 template<typename T>
 struct RobotState
 {
@@ -47,34 +38,6 @@ struct Control
     double pos_z = 0.0;
 };
 
-struct ModelParams
-{
-    std::string model_name;
-    std::string framework;
-    bool use_history;
-    double dt;
-    int decimation;
-    int num_observations;
-    std::vector<std::string> observations;
-    std::vector<int> observations_history;
-    double damping;
-    double stiffness;
-    double action_scale_pos;
-    double action_scale_vel;
-    std::vector<int> hip_scale_reduction_indices;
-    int num_of_dofs;
-    double lin_vel_scale;
-    double ang_vel_scale;
-    double dof_pos_scale;
-    double dof_vel_scale;
-    double clip_obs;
-    torch::Tensor clip_actions_upper;
-    torch::Tensor clip_actions_lower;
-    torch::Tensor torque_limits;
-    torch::Tensor commands_scale;
-    torch::Tensor default_dof_pos;
-};
-
 struct Observations
 {
     torch::Tensor lin_vel;           
@@ -90,11 +53,12 @@ struct Observations
 class rl_sdk
 {
 public:
-    rl_sdk(){};
+    rl_sdk(){
+      params = std::make_shared<DiabloParams>();
+    };
     ~rl_sdk(){};
 
     bool sendCommand_ = false;
-    ModelParams params;
     Observations obs;
 
     // history buffer
@@ -118,8 +82,7 @@ public:
     // control
     Control control;
 
-    // yaml params
-    void ReadYaml(const std::string config_path);
+    std::shared_ptr<ModelParams> params;
 
     // others
     std::string robot_name;
