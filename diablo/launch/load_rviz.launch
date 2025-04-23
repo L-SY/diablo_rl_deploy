@@ -1,6 +1,13 @@
 <launch>
     <param name="robot_description"
-           command="$(find xacro)/xacro $(find diablo)/urdf/diablo.xacro"/>
+           command="$(find xacro)/xacro $(find diablo)/urdf/diablo.xacro
+           close_chain:=true
+           use_simulation:=true
+    "/>
+
+<!--    <param name="robot_description"-->
+<!--           command="$(find xacro)/xacro $(find diablo)/urdf/diablo_ASM.xacro-->
+<!--    "/>-->
 
     <!-- send fake joint values -->
     <node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="joint_state_publisher_gui">

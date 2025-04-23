@@ -4,6 +4,6 @@
         <param name="frequency" value="10"/>
         <param name="robot_name" value="diablo"/>
         <param name="send_command" value="true"/>
-        <param name="rl_path" value="$(find diablo)/models"/>
+        <param name="model_path" value="$(find diablo)/models/integrated_policy_ff_1k3.pt"/>
     </node>
 </launch>

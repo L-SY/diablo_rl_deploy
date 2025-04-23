@@ -1,8 +1,5 @@
-#model_name: "integrated_policy_1w.pt"
-#model_name: "integrated_policy_5w.pt"
-#model_name: "integrated_policy_without_ff_1w.pt"
-model_name: "integrated_policy_dt002_1k.pt"
-#model_name: "integrated_policy_dt002_2k3.pt"
+model_name: "integrated_policy_ff_1k3.pt"
+
 framework: "isaacgym"
 rows: 2
 cols: 3
@@ -10,14 +7,14 @@ use_history: True
 use_vmc: False
 dt: 0.005
 decimation: 2
-num_observations: 27
+num_observations: 25
 observations: ["ang_vel", "gravity_vec", "commands", "dof_pos", "dof_vel", "actions"]
 observations_history: [0, 1, 2, 3, 4]
 clip_obs: 100.0
-clip_actions_lower: [-100, -100, -100,
-                     -100, -100, -100]
-clip_actions_upper: [100, 100, 100,
-                     100, 100, 100]
+clip_actions_lower: [-10, -10, -10,
+                     -10, -10, -10]
+clip_actions_upper: [10, 10, 10,
+                     10, 10, 10]
 
 num_of_dofs: 6
 action_scale_pos: 0.5
@@ -30,5 +27,4 @@ dof_vel_scale: 0.05
 commands_scale: [2.0, 0.25, 5.0]
 torque_limits: [26, 26, 26,
                 26, 26, 26]
-default_dof_pos: [ 0, 0, 0.0,
-                   0, 0, 0.0]
+default_dof_pos: [ 0, 0, 0.0, 0]

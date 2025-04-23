@@ -8,7 +8,7 @@
     <xacro:arg name="fixed_leg" default="false"/>
     <xacro:arg name="fixed_wheel" default="false"/>
     <xacro:arg name="use_gazebo" default="true"/>
-    <xacro:arg name="close_chain" default="false"/>
+    <xacro:arg name="close_chain" default="true"/>
     <xacro:arg name="use_simulation" default="false"/>
 
     <xacro:if value="$(arg load_chassis)">

@@ -8,44 +8,38 @@ controllers:
 
   wheeled_bipedal_rl_controller:
     type: rl_controller/WheeledBipedalRLController
-    simulation: false
     default_length: 0.30
-    lp_cutoff_frequency: 40
-    inertial_alpha: 0.1
-    window_size: 2
+    action_inertia: 0.0
+
     add_gravity_ff: true
     vmc:
-      use_vmc: false
       gravity_feedforward: 60
       # bias compensates for VMC calculations
       hip_bias: 0.13433
       knee_bias: -0.2687
       left_vmc:
-        type: serial
-        centre_offset: 0 # only for parallel now
         l1: 0.14
         l2: 0.14
       right_vmc:
-        type: serial
-        centre_offset: 0 # only for parallel now
         l1: 0.14
         l2: 0.14
-      gains:
-        left_r: { p: 300, i: 0.0, d: 8., i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
-        left_theta: { p: 10, i: 0.0, d: 1., i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
-        right_r: { p: 300, i: 0.0, d: 8., i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
-        right_theta: { p: 10, i: 0.0, d: 1., i_clamp_max: 0., i_clamp_min: 0, antiwindup: true, publish_state: true }
-
 
     prostrate:
       hip: 0.
       knee: 0.
 
     gains:
-      left_fake_hip_joint: { p: 20, i: 0.0, d: 0.12, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
-      left_hip_joint: { p: 25, i: 0.0, d: 0.1, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
-      left_wheel_joint: { p: 0.22, i: 0.0, d: 0, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
-      right_fake_hip_joint: { p: 20, i: 0.0, d: 0.12, i_clamp_max: 0., i_clamp_min: 0, antiwindup: true, publish_state: true }
-      right_hip_joint: { p: 25, i: 0., d: 0.1, i_clamp_max: 0., i_clamp_min: 0, antiwindup: true, publish_state: true }
-      right_wheel_joint: { p: 0.22, i: 0., d: 0.0, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
+      left_fake_hip_joint: { p: 15, i: 0.0, d: 0.3, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
+      left_hip_joint: { p: 18, i: 0.0, d: 0.2, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
+      left_wheel_joint: { p: 0.3, i: 0.0, d: 0, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
+      right_fake_hip_joint: { p: 15, i: 0.0, d: 0.3, i_clamp_max: 0., i_clamp_min: 0, antiwindup: true, publish_state: true }
+      right_hip_joint: { p: 18, i: 0., d: 0.2, i_clamp_max: 0., i_clamp_min: 0, antiwindup: true, publish_state: true }
+      right_wheel_joint: { p: 0.3, i: 0., d: 0.0, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
 
+#        could stand pd with sine command
+#        left_fake_hip_joint: { p: 25, i: 0.0, d: 0.6, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
+#        left_hip_joint: { p: 30, i: 0.0, d: 0.6, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
+#        left_wheel_joint: { p: 0.22, i: 0.0, d: 0, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
+#        right_fake_hip_joint: { p: 25, i: 0.0, d: 0.8, i_clamp_max: 0., i_clamp_min: 0, antiwindup: true, publish_state: true }
+#        right_hip_joint: { p: 35, i: 0., d: 1.2, i_clamp_max: 0., i_clamp_min: 0, antiwindup: true, publish_state: true }
+#        right_wheel_joint: { p: 0.4, i: 0., d: 0.0, i_clamp_max: 0., i_clamp_min: 0., antiwindup: true, publish_state: true }
