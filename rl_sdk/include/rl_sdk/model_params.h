@@ -12,7 +12,6 @@ class ModelParams {
 public:
   virtual ~ModelParams() = default;
 
-  std::string model_name;
   std::string framework;
   bool use_history;
   double dt;

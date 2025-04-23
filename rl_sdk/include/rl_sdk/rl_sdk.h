@@ -68,9 +68,7 @@ public:
     RobotState<double> robot_state;
 
     // init
-    void InitObservations();
-    void InitOutputs();
-    void InitControl();
+    void InitRL();
 
     // rl functions
     torch::Tensor Forward();

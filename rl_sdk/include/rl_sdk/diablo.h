@@ -8,7 +8,6 @@
 class DiabloParams : public ModelParams {
 public:
   DiabloParams() {
-    model_name = "integrated_policy_ff_1k3.pt";
     framework = "isaacgym";
     use_history = true;
     dt = 0.005;

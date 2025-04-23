@@ -21,24 +21,14 @@ public:
 
     // read params from yaml
     nh_.param<std::string>("robot_name", robot_name, "");
-    std::string rl_path;
-    nh_.param<std::string>("rl_path", rl_path, "");
-
-    nh_.param<bool>("send_command", sendCommand_, false);
-    if (sendCommand_)
-      rlCommandPub_ = nh_.advertise<std_msgs::Float64MultiArray>("/rl/command", 1);
-    else
-      rlCommandPub_ = nh_.advertise<std_msgs::Float64MultiArray>("/rl/command_test", 1);
-
-    // model
-    std::string model_path = std::string(rl_path + "/" + params->model_name);
+    std::string model_path;
+    nh_.param<std::string>("model_path", model_path, "");
     model = torch::jit::load(model_path);
 
+    rlCommandPub_ = nh_.advertise<std_msgs::Float64MultiArray>("/rl/command", 1);
     // init
     torch::autograd::GradMode::set_enabled(false);
-    InitObservations();
-    InitOutputs();
-    InitControl();
+    InitRL();
 
     ROS_INFO_STREAM("rl_interface init success!");
   }
