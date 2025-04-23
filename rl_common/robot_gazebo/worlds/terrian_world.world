@@ -25,7 +25,7 @@
                 <visual name="visual_slopes">
                     <geometry>
                         <mesh>
-                            <uri>file:///home/lsy/Desktop/Gazebo/slopes.stl</uri>
+                            <uri>file:///home/lsy/rl_ws/src/rl_common/robot_gazebo/model/slopes.stl</uri>
                             <scale>0.001 0.001 0.001</scale>
                         </mesh>
                     </geometry>
@@ -34,7 +34,7 @@
                 <collision name="collision_slopes">
                     <geometry>
                         <mesh>
-                            <uri>file:///home/lsy/Desktop/Gazebo/slopes.stl</uri>
+                            <uri>file:///home/lsy/rl_ws/src/rl_common/robot_gazebo/model/slopes.stl</uri>
                             <scale>0.001 0.001 0.001</scale>
                         </mesh>
                     </geometry>
@@ -49,7 +49,7 @@
                 <visual name="visual_speed_bumps">
                     <geometry>
                         <mesh>
-                            <uri>file:///home/lsy/Desktop/Gazebo/speed_bumps.stl</uri>
+                            <uri>file:///home/lsy/rl_ws/src/rl_common/robot_gazebo/model/speed_bumps.stl</uri>
                             <scale>0.001 0.001 0.001</scale>
                         </mesh>
                     </geometry>
@@ -58,7 +58,7 @@
                 <collision name="collision_speed_bumps">
                     <geometry>
                         <mesh>
-                            <uri>file:///home/lsy/Desktop/Gazebo/speed_bumps.stl</uri>
+                            <uri>file:///home/lsy/rl_ws/src/rl_common/robot_gazebo/model/speed_bumps.stl</uri>
                             <scale>0.001 0.001 0.001</scale>
                         </mesh>
                     </geometry>
