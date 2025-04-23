@@ -57,14 +57,8 @@ public:
       obs.actions = Forward();
       torch::Tensor origin_output_command = ComputeCommand(obs.actions);
       output_command = torch::clamp(origin_output_command, params.clip_actions_lower, params.clip_actions_upper);
-//      output_command[0][0] = 0;
-//      output_command[0][1] = 0.1;
-//      output_command[0][2] = 0;
-//      output_command[0][3] = 0;
-//      output_command[0][4] = 0.1;
-//      output_command[0][5] = 0;
       ROS_INFO_STREAM(output_command[0]);
-//      ROS_INFO_STREAM(obs.vmc);
+
       std_msgs::Float64MultiArray commandMsg;
       for (int i = 0; i < params.num_of_dofs; ++i) {
         commandMsg.data.push_back(output_command[0][i].item<double>());
@@ -103,32 +97,17 @@ private:
 
     for(int i = 0; i < params.num_of_dofs; ++i)
     {
-      robot_state.motor_state.q[i] = msg.joint_states.position[i];
       robot_state.motor_state.dq[i] = msg.joint_states.velocity[i];
       robot_state.motor_state.tauEst[i] = msg.joint_states.effort[i];
     }
-
-    if (params.use_vmc)
-    {
-      // left_theta, left_theta_dot , left_l, left_l_dot,
-      robot_state.vmc.theta[0] = msg.left.theta;
-      robot_state.vmc.theta[1] = msg.right.theta;
-      robot_state.vmc.dtheta[0] = msg.left.theta_dot;
-      robot_state.vmc.dtheta[1] = msg.right.theta_dot;
-      robot_state.vmc.l[0] = msg.left.l;
-      robot_state.vmc.l[1] = msg.right.l;
-      robot_state.vmc.dl[0] = msg.left.l_dot;
-      robot_state.vmc.dl[1] = msg.right.l_dot;
-    }
+    robot_state.motor_state.q[0] = msg.joint_states.position[0];
+    robot_state.motor_state.q[1] = msg.joint_states.position[1];
+    robot_state.motor_state.q[2] = msg.joint_states.position[3];
+    robot_state.motor_state.q[3] = msg.joint_states.position[4];
 
     control.vel_x = msg.commands[0];
     control.vel_yaw = msg.commands[1];
     control.pos_z = msg.commands[2];
-
-//    for(int i = 0; i < params.num_of_dofs; ++i)
-//    {
-//      robot_state.actions[i] = msg.actions[i];
-//    }
   }
 };
 

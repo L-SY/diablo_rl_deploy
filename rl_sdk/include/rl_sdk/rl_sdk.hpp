@@ -30,20 +30,12 @@ struct RobotState
 
     struct MotorState
     {
-        std::vector<T> q = std::vector<T>(32, 0.0);
-        std::vector<T> dq = std::vector<T>(32, 0.0);
-        std::vector<T> ddq = std::vector<T>(32, 0.0);
-        std::vector<T> tauEst = std::vector<T>(32, 0.0);
-        std::vector<T> cur = std::vector<T>(32, 0.0);
+        std::vector<T> q = std::vector<T>(6, 0.0);
+        std::vector<T> dq = std::vector<T>(6, 0.0);
+        std::vector<T> ddq = std::vector<T>(6, 0.0);
+        std::vector<T> tauEst = std::vector<T>(6, 0.0);
+        std::vector<T> cur = std::vector<T>(6, 0.0);
     } motor_state;
-
-    struct VMC
-    {
-      std::vector<T> theta = {0.0, 0.0};
-      std::vector<T> dtheta = {0.0, 0.0};
-      std::vector<T> l = {0.0, 0.0};
-      std::vector<T> dl = {0.0, 0.0};
-    } vmc;
 
     std::vector<T> actions = std::vector<T>(6, 0.0);
 };
@@ -81,17 +73,6 @@ struct ModelParams
     torch::Tensor torque_limits;
     torch::Tensor commands_scale;
     torch::Tensor default_dof_pos;
-
-    //  For vmc
-    bool use_vmc;
-    int num_of_vmc;
-    double l_scale;
-    double l_dot_scale;
-    double theta_scale;
-    double theta_dot_scale;
-    double l_offset;
-    double action_scale_l;
-    double action_scale_theta;
 };
 
 struct Observations
@@ -101,7 +82,6 @@ struct Observations
     torch::Tensor gravity_vec;      
     torch::Tensor commands;        
     torch::Tensor base_quat;
-    torch::Tensor vmc;
     torch::Tensor dof_pos;           
     torch::Tensor dof_vel;           
     torch::Tensor actions;
@@ -143,9 +123,6 @@ public:
 
     // others
     std::string robot_name;
-
-    // protect func
-    void TorqueProtect(torch::Tensor origin_output_torques);
 
 //protected:
     // rl module
