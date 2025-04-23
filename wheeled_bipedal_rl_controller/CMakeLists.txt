@@ -53,7 +53,6 @@ include_directories(
 )
 
 add_library(vmc
-        src/vmc/ParallelVMC.cpp
         src/vmc/SerialVMC.cpp
 )
 

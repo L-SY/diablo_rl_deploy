@@ -30,7 +30,6 @@
 #include "std_msgs/Float64MultiArray.h"
 
 // vmc
-#include "vmc/ParallelVMC.h"
 #include "vmc/SerialVMC.h"
 
 
@@ -64,7 +63,7 @@ private:
 
   int controllerState_ = NORMAL;
   ros::Time startTime_;
-  bool stateChanged_ = false, simulation_ = false;
+  bool stateChanged_ = false;
   ros::Subscriber cmdSub_;
 
   // Interface
@@ -82,28 +81,26 @@ private:
 
   // Low level controller
   std::vector<control_toolbox::Pid> Pids_;
-  std::vector<control_toolbox::Pid> VMCPids_;
+  control_toolbox::Pid dynamicIntegralCompensation_;
   double default_length_;
 
   // rl_interface
   rl_msgs::RobotState robotStateMsg_;
-  ros::Publisher robotStatePub_,simRobotStatePub_;
+  ros::Publisher robotStatePub_;
   ros::Subscriber rlCommandSub_;
   realtime_tools::RealtimeBuffer<std_msgs::Float64MultiArray> rlCmdRtBuffer_{};
 
   // vmc
   bool useVMC_, addGravityFF_;
-  double gravityFeedforward_, hipBias_, kneeBias_;
+  double gravityFeedforward_, hipBias_, kneeBias_, actionInertia_;
   std::shared_ptr<vmc::SerialVMC> leftSerialVMCPtr_;
   std::shared_ptr<vmc::SerialVMC> rightSerialVMCPtr_;
-//  std::shared_ptr<vmc::Parallel> ParallelVMCPtr_;
 
   // prostrate
   double prostrateHip_;
   double prostrateKnee_;
 
   double basePitch_;
-  std::vector<LowPassFilter> actionLPFs_;
   std::vector<double> actions_;
   std::vector<double> lastAction_;
 };
